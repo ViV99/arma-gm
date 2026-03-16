@@ -1,0 +1,15 @@
+class Header {
+    gameType = "Coop";
+    minPlayers = 1;
+    maxPlayers = 4;
+};
+
+respawn = "BASE";
+respawnDelay = 10;
+respawnOnStart = 0;
+
+onLoadName = "ArmaGM City Defense";
+onLoadMission = "LLM Game Master Test — Defend Agia Marina";
+author = "ArmaGM Project";
+overviewText = "OPFOR defends Agia Marina against BLUFOR. AI commander controlled by LLM.";
+overviewPicture = "";

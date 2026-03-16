@@ -1,0 +1,141 @@
+{
+  "tick_id": 15,
+  "mission_time": 225.0,
+  "friendly_forces": [
+    {
+      "id": "grp_alpha_1",
+      "type": "infantry_squad",
+      "size": 7,
+      "position": "agia_marina_crossroad",
+      "status": "defending",
+      "health": 0.85,
+      "ammo": 0.7,
+      "current_task": "Hold main crossroad, cover southern approach"
+    },
+    {
+      "id": "grp_bravo_1",
+      "type": "infantry_squad",
+      "size": 8,
+      "position": "agia_marina_church",
+      "status": "idle",
+      "health": 1.0,
+      "ammo": 1.0,
+      "current_task": "Reserve at church square, ready for counter-attack"
+    },
+    {
+      "id": "grp_charlie_1",
+      "type": "infantry_squad",
+      "size": 6,
+      "position": "agia_marina_warehouse",
+      "status": "defending",
+      "health": 0.75,
+      "ammo": 0.8,
+      "current_task": "Defend western sector from warehouse"
+    },
+    {
+      "id": "grp_delta_1",
+      "type": "infantry_squad",
+      "size": 4,
+      "position": "agia_marina_tower",
+      "status": "idle",
+      "health": 1.0,
+      "ammo": 0.9,
+      "current_task": "Overwatch from tower, observe SE approach"
+    },
+    {
+      "id": "grp_motor_1",
+      "type": "motorized",
+      "size": 3,
+      "position": "agia_marina_parking",
+      "status": "idle",
+      "health": 1.0,
+      "ammo": 0.95,
+      "current_task": "Standby as mobile reaction force"
+    }
+  ],
+  "enemy_contacts": [
+    {
+      "id": "contact_alpha",
+      "type": "infantry",
+      "estimated_size": "squad",
+      "position": "agia_marina_road_south",
+      "confidence": 0.9,
+      "direction": "approaching",
+      "last_seen": 220.0
+    },
+    {
+      "id": "contact_bravo",
+      "type": "vehicle",
+      "estimated_size": "fire_team",
+      "position": "agia_marina_bridge",
+      "confidence": 0.6,
+      "direction": "stationary",
+      "last_seen": 210.0
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj_crossroad",
+      "status": "contested",
+      "threat_level": "high",
+      "graph_node": "agia_marina_crossroad"
+    },
+    {
+      "id": "obj_south_road",
+      "status": "held",
+      "threat_level": "medium",
+      "graph_node": "agia_marina_road_south"
+    },
+    {
+      "id": "obj_west_road",
+      "status": "held",
+      "threat_level": "low",
+      "graph_node": "agia_marina_road_west"
+    }
+  ],
+  "events_since_last_tick": [
+    {
+      "type": "contact_new",
+      "data": {
+        "contact_id": "contact_alpha",
+        "location": "agia_marina_road_south",
+        "description": "Squad-sized infantry advancing north on main road"
+      },
+      "timestamp": 218.0
+    },
+    {
+      "type": "contact_new",
+      "data": {
+        "contact_id": "contact_bravo",
+        "location": "agia_marina_bridge",
+        "description": "Probable vehicle observed near bridge"
+      },
+      "timestamp": 210.0
+    },
+    {
+      "type": "unit_damaged",
+      "data": {
+        "unit_id": "grp_alpha_1",
+        "casualties": 1,
+        "cause": "long_range_fire"
+      },
+      "timestamp": 205.0
+    }
+  ],
+  "resources": {
+    "reserve_infantry": 2,
+    "reserve_motorized": 1,
+    "artillery_available": true,
+    "cas_available": false
+  },
+  "graph": {
+    "strategic": {},
+    "tactical": {},
+    "local": null
+  },
+  "pacing": {
+    "current_phase": "build_up",
+    "intensity": 0.45,
+    "phase_ticks": 4
+  }
+}

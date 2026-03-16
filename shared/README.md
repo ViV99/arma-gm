@@ -1,0 +1,135 @@
+# Shared — Schemas and Map Graphs
+
+Source-of-truth data used by both the GM server (Python) and the Arma mod (SQF). Nothing in this directory is generated at runtime — it is hand-crafted or extracted offline and committed to the repo.
+
+## JSON Schemas
+
+`schemas/` contains JSON Schema files that define the wire protocol:
+
+| File | Validates |
+|------|-----------|
+| `schemas/game_state.json` | `POST /api/v1/tick` request body |
+| `schemas/commands.json` | `TickResponse.commands` array |
+
+These are reference documentation. Validation in production is done by Pydantic models in `gm-server/src/gm_server/models/`.
+
+## Map Graphs
+
+`maps/<map>/` contains the hierarchical graph data for each supported map.
+
+### Current maps
+
+- **Stratis** — `maps/stratis/`
+
+### Directory structure
+
+```
+maps/stratis/
+├── strategic_graph.json          # L0 — whole map, ~20 nodes
+└── tactical/
+    └── agia_marina.json          # L1 — Agia Marina settlement, ~25 nodes
+```
+
+### Graph JSON format
+
+Both L0 and L1 files use the same schema:
+
+```json
+{
+  "map": "stratis",
+  "description": "Stratis strategic overview",
+  "level": 0,
+  "nodes": [
+    {
+      "id": "agia_marina",
+      "name": "Agia Marina",
+      "position": [2300, 2600, 5],
+      "elevation": 5.0,
+      "properties": {
+        "cover_quality": 0.7,
+        "dominance": 0.8,
+        "vehicle_access": true,
+        "building_count": 45,
+        "tactical_suitability": ["defense", "urban_combat"]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from_node": "agia_marina",
+      "to_node": "airport",
+      "distance": 3200,
+      "bearing": 45.0,
+      "road_type": "main",
+      "cover_rating": 0.2,
+      "vehicle_traversable": true
+    }
+  ]
+}
+```
+
+### Node properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `cover_quality` | float 0–1 | How much cover this node provides |
+| `dominance` | float 0–1 | Tactical value (high ground, key terrain) |
+| `vehicle_access` | bool | Can vehicles operate here |
+| `building_count` | int | Number of buildings (L1/L2 only) |
+| `tactical_suitability` | string[] | `defense`, `overwatch`, `ambush`, `urban_combat`, `vehicle` |
+
+### Edge properties
+
+| Property | Type | Values |
+|----------|------|--------|
+| `road_type` | string | `main`, `secondary`, `dirt`, `path`, `none` |
+| `cover_rating` | float 0–1 | Cover available while traversing this route |
+| `vehicle_traversable` | bool | Can vehicles use this route |
+| `bearing` | float | Direction in degrees |
+| `elevation_change` | float | Meters of elevation change |
+
+## Adding a New Map
+
+1. Create `maps/<mapname>/strategic_graph.json` — L0, ~15–25 nodes
+   - Use Arma 3 map editor or `nearestLocations` SQF to find positions
+   - Nodes: towns, bases, hilltops, bridges, road junctions, entry points
+   - Edges: main roads between them with approximate distances
+
+2. Create `maps/<mapname>/tactical/<zone_name>.json` for each major settlement — L1, ~20–40 nodes
+   - Nodes: districts, blocks, key buildings, intersections, open areas
+   - Edges: streets and paths with cover ratings
+
+3. Set `level: 1` in the tactical JSON file (the Python loader injects this into all nodes)
+
+4. Add node positions to `initServer.sqf` in the mission:
+   ```sqf
+   ArmaGM_nodePositions = [
+       ["<node_id>", [x, y]],
+       ...
+   ];
+   ```
+   The `[x, y]` coordinates must match the `position` field in the JSON (Arma world coordinates).
+
+5. Update `gm-server/src/gm_server/main.py` to load the new map:
+   ```python
+   tactical_graphs: dict[str, MapGraph] = {}
+   tactical_dir = maps_dir / "<mapname>" / "tactical"
+   ```
+   The server already scans all `.json` files in the tactical directory automatically.
+
+## Visualizing Graphs
+
+```bash
+# View strategic overview
+python tools/graph_visualizer.py shared/maps/stratis/strategic_graph.json
+
+# View tactical graph, save as PNG
+python tools/graph_visualizer.py shared/maps/stratis/tactical/agia_marina.json \
+  --output agia_marina.png
+
+# Custom title
+python tools/graph_visualizer.py shared/maps/stratis/strategic_graph.json \
+  --title "Stratis Strategic Overview"
+```
+
+Node colors indicate type; edge thickness and color indicate road type.

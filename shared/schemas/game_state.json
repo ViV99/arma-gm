@@ -1,0 +1,254 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TickRequest",
+  "description": "Game state snapshot sent to the GM server each tick",
+  "type": "object",
+  "required": ["tick_id", "mission_time", "friendly_forces", "enemy_contacts", "objectives", "events_since_last_tick", "resources", "graph", "pacing"],
+  "properties": {
+    "tick_id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "mission_time": {
+      "type": "number",
+      "description": "Mission elapsed time in seconds"
+    },
+    "friendly_forces": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/friendly_unit" }
+    },
+    "enemy_contacts": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/enemy_contact" }
+    },
+    "objectives": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/objective" }
+    },
+    "events_since_last_tick": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/event" }
+    },
+    "resources": { "$ref": "#/definitions/resources" },
+    "graph": { "$ref": "#/definitions/graph_snapshot" },
+    "pacing": { "$ref": "#/definitions/pacing_state" }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "friendly_unit": {
+      "type": "object",
+      "required": ["id", "type", "strength", "location", "status", "task"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["infantry_squad", "infantry_fireteam", "motorized", "armor", "static_weapon", "sniper_team"]
+        },
+        "strength": {
+          "type": "object",
+          "required": ["current", "max"],
+          "properties": {
+            "current": { "type": "integer", "minimum": 0 },
+            "max": { "type": "integer", "minimum": 1 }
+          },
+          "additionalProperties": false
+        },
+        "location": { "type": "string", "description": "Current graph node ID" },
+        "status": {
+          "type": "string",
+          "enum": ["idle", "moving", "engaged", "defending", "retreating", "destroyed"]
+        },
+        "task": { "type": "string", "description": "Current assigned task description" },
+        "behaviour": {
+          "type": "string",
+          "enum": ["safe", "aware", "combat", "stealth"]
+        },
+        "combat_mode": {
+          "type": "string",
+          "enum": ["blue", "green", "white", "yellow", "red"]
+        },
+        "morale": {
+          "type": "string",
+          "enum": ["broken", "shaken", "steady", "confident"]
+        },
+        "vehicle": {
+          "type": ["string", "null"],
+          "description": "Vehicle classname if mounted, null if on foot"
+        }
+      },
+      "additionalProperties": false
+    },
+    "enemy_contact": {
+      "type": "object",
+      "required": ["id", "type", "location", "confidence", "last_seen"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["infantry", "vehicle", "armor", "helicopter", "unknown"]
+        },
+        "estimated_size": {
+          "type": "string",
+          "enum": ["fireteam", "squad", "platoon", "unknown"]
+        },
+        "location": { "type": "string", "description": "Graph node ID of last known position" },
+        "heading": {
+          "type": ["string", "null"],
+          "enum": ["N", "NE", "E", "SE", "S", "SW", "W", "NW", null],
+          "description": "Observed direction of movement"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["confirmed", "probable", "suspected"],
+          "description": "How reliable this contact report is"
+        },
+        "last_seen": {
+          "type": "number",
+          "description": "Mission time when last observed"
+        }
+      },
+      "additionalProperties": false
+    },
+    "objective": {
+      "type": "object",
+      "required": ["id", "name", "type", "status", "location"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["defend", "hold", "destroy", "patrol", "ambush"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "completed", "failed", "pending"]
+        },
+        "location": { "type": "string", "description": "Graph node ID" },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "normal", "high", "critical"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "event": {
+      "type": "object",
+      "required": ["time", "type", "description"],
+      "properties": {
+        "time": { "type": "number", "description": "Mission time of event" },
+        "type": {
+          "type": "string",
+          "enum": [
+            "contact_new",
+            "contact_lost",
+            "unit_engaged",
+            "unit_casualties",
+            "unit_destroyed",
+            "objective_changed",
+            "enemy_killed",
+            "building_destroyed",
+            "vehicle_destroyed",
+            "reinforcement_arrived",
+            "player_spotted",
+            "command_completed",
+            "command_failed"
+          ]
+        },
+        "description": { "type": "string" },
+        "location": { "type": "string", "description": "Graph node ID where event occurred" },
+        "unit": { "type": "string", "description": "Unit involved, if applicable" }
+      },
+      "additionalProperties": false
+    },
+    "resources": {
+      "type": "object",
+      "required": ["infantry_reserves", "motorized_reserves", "artillery_rounds", "cas_available"],
+      "properties": {
+        "infantry_reserves": { "type": "integer", "minimum": 0 },
+        "motorized_reserves": { "type": "integer", "minimum": 0 },
+        "artillery_rounds": { "type": "integer", "minimum": 0 },
+        "cas_available": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "graph_snapshot": {
+      "type": "object",
+      "required": ["level", "nodes", "edges"],
+      "properties": {
+        "level": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "description": "Graph detail level: 0=strategic, 1=tactical, 2=local"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "type", "position"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "position": {
+                "type": "array",
+                "items": { "type": "number" },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "elevation": { "type": "number" },
+              "properties": { "type": "object" }
+            }
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["from_node", "to_node", "distance"],
+            "properties": {
+              "from_node": { "type": "string" },
+              "to_node": { "type": "string" },
+              "distance": { "type": "number" },
+              "bearing": { "type": "number" },
+              "road_type": {
+                "type": "string",
+                "enum": ["main", "secondary", "dirt", "path", "none"]
+              },
+              "elevation_change": { "type": "number" },
+              "cover_rating": { "type": "number", "minimum": 0, "maximum": 1 },
+              "vehicle_traversable": { "type": "boolean" }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "pacing_state": {
+      "type": "object",
+      "required": ["phase", "intensity"],
+      "properties": {
+        "phase": {
+          "type": "string",
+          "enum": ["calm", "buildup", "peak", "relax"]
+        },
+        "intensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Current intensity value 0.0-1.0"
+        },
+        "ticks_in_phase": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "player_threat_level": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "How threatened players currently feel"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

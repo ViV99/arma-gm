@@ -1,0 +1,315 @@
+{
+  "map": "Stratis",
+  "level": 0,
+  "description": "Strategic-level graph for Stratis island (~8km x 4km)",
+  "nodes": [
+    {
+      "id": "agia_marina",
+      "name": "Agia Marina",
+      "type": "town",
+      "position": [2300, 0, 2600],
+      "elevation": 5,
+      "properties": {
+        "cover_quality": 0.7,
+        "dominance": 0.3,
+        "vehicle_access": true,
+        "building_count": 45,
+        "tactical_suitability": ["defense", "ambush"]
+      }
+    },
+    {
+      "id": "air_station_mike26",
+      "name": "Air Station Mike-26",
+      "type": "military",
+      "position": [2000, 0, 3200],
+      "elevation": 80,
+      "properties": {
+        "cover_quality": 0.6,
+        "dominance": 0.5,
+        "vehicle_access": true,
+        "building_count": 12,
+        "tactical_suitability": ["defense", "staging", "vehicle_depot"]
+      }
+    },
+    {
+      "id": "camp_rogain",
+      "name": "Camp Rogain",
+      "type": "military",
+      "position": [3800, 0, 5000],
+      "elevation": 25,
+      "properties": {
+        "cover_quality": 0.5,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 8,
+        "tactical_suitability": ["staging", "defense"]
+      }
+    },
+    {
+      "id": "camp_maxwell",
+      "name": "Camp Maxwell",
+      "type": "military",
+      "position": [3500, 0, 3800],
+      "elevation": 40,
+      "properties": {
+        "cover_quality": 0.6,
+        "dominance": 0.3,
+        "vehicle_access": true,
+        "building_count": 10,
+        "tactical_suitability": ["staging", "defense", "vehicle_depot"]
+      }
+    },
+    {
+      "id": "kamino_firing_range",
+      "name": "Kamino Firing Range",
+      "type": "military",
+      "position": [4600, 0, 4400],
+      "elevation": 15,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 5,
+        "tactical_suitability": ["staging"]
+      }
+    },
+    {
+      "id": "lz_connor",
+      "name": "LZ Connor",
+      "type": "landing_zone",
+      "position": [2500, 0, 3800],
+      "elevation": 60,
+      "properties": {
+        "cover_quality": 0.2,
+        "dominance": 0.4,
+        "vehicle_access": true,
+        "building_count": 0,
+        "tactical_suitability": ["staging"]
+      }
+    },
+    {
+      "id": "lz_baldy",
+      "name": "LZ Baldy",
+      "type": "landing_zone",
+      "position": [2700, 0, 4200],
+      "elevation": 90,
+      "properties": {
+        "cover_quality": 0.2,
+        "dominance": 0.5,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["overwatch"]
+      }
+    },
+    {
+      "id": "girna",
+      "name": "Girna",
+      "type": "town",
+      "position": [2200, 0, 4000],
+      "elevation": 35,
+      "properties": {
+        "cover_quality": 0.5,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 15,
+        "tactical_suitability": ["defense", "ambush"]
+      }
+    },
+    {
+      "id": "camp_tempest",
+      "name": "Camp Tempest",
+      "type": "military",
+      "position": [1800, 0, 4600],
+      "elevation": 10,
+      "properties": {
+        "cover_quality": 0.5,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 6,
+        "tactical_suitability": ["staging", "defense"]
+      }
+    },
+    {
+      "id": "telos",
+      "name": "Telos",
+      "type": "town",
+      "position": [3200, 0, 4500],
+      "elevation": 20,
+      "properties": {
+        "cover_quality": 0.4,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 8,
+        "tactical_suitability": ["defense"]
+      }
+    },
+    {
+      "id": "jay_cove",
+      "name": "Jay Cove",
+      "type": "terrain",
+      "position": [1500, 0, 3500],
+      "elevation": 2,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.1,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["ambush"]
+      }
+    },
+    {
+      "id": "stratis_airfield",
+      "name": "Stratis Airfield",
+      "type": "military",
+      "position": [4400, 0, 2200],
+      "elevation": 10,
+      "properties": {
+        "cover_quality": 0.4,
+        "dominance": 0.3,
+        "vehicle_access": true,
+        "building_count": 15,
+        "tactical_suitability": ["staging", "vehicle_depot", "defense"]
+      }
+    },
+    {
+      "id": "old_outpost",
+      "name": "Old Outpost",
+      "type": "terrain",
+      "position": [3000, 0, 3400],
+      "elevation": 55,
+      "properties": {
+        "cover_quality": 0.4,
+        "dominance": 0.4,
+        "vehicle_access": false,
+        "building_count": 3,
+        "tactical_suitability": ["overwatch", "defense"]
+      }
+    },
+    {
+      "id": "spartan",
+      "name": "Spartan",
+      "type": "military",
+      "position": [2600, 0, 3000],
+      "elevation": 30,
+      "properties": {
+        "cover_quality": 0.5,
+        "dominance": 0.3,
+        "vehicle_access": true,
+        "building_count": 8,
+        "tactical_suitability": ["staging", "defense"]
+      }
+    },
+    {
+      "id": "hill_150",
+      "name": "Hill 150",
+      "type": "terrain",
+      "position": [2400, 0, 2900],
+      "elevation": 150,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.8,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["overwatch", "defense"]
+      }
+    },
+    {
+      "id": "hill_200",
+      "name": "Hill 200",
+      "type": "terrain",
+      "position": [3100, 0, 4000],
+      "elevation": 200,
+      "properties": {
+        "cover_quality": 0.2,
+        "dominance": 0.9,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["overwatch"]
+      }
+    },
+    {
+      "id": "coastal_overlook_east",
+      "name": "Coastal Overlook East",
+      "type": "terrain",
+      "position": [4800, 0, 3200],
+      "elevation": 60,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.6,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["overwatch"]
+      }
+    },
+    {
+      "id": "coastal_overlook_west",
+      "name": "Coastal Overlook West",
+      "type": "terrain",
+      "position": [1400, 0, 2800],
+      "elevation": 45,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.5,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["overwatch"]
+      }
+    },
+    {
+      "id": "south_entry",
+      "name": "South Entry Point",
+      "type": "entry_point",
+      "position": [4200, 0, 1500],
+      "elevation": 5,
+      "properties": {
+        "cover_quality": 0.1,
+        "dominance": 0.0,
+        "vehicle_access": true,
+        "building_count": 0,
+        "tactical_suitability": []
+      }
+    },
+    {
+      "id": "north_entry",
+      "name": "North Entry Point",
+      "type": "entry_point",
+      "position": [2000, 0, 5200],
+      "elevation": 5,
+      "properties": {
+        "cover_quality": 0.1,
+        "dominance": 0.0,
+        "vehicle_access": true,
+        "building_count": 0,
+        "tactical_suitability": []
+      }
+    }
+  ],
+  "edges": [
+    {"from_node": "south_entry", "to_node": "stratis_airfield", "distance": 750, "bearing": 340, "road_type": "main", "elevation_change": 5, "cover_rating": 0.1, "vehicle_traversable": true},
+    {"from_node": "stratis_airfield", "to_node": "agia_marina", "distance": 2100, "bearing": 300, "road_type": "main", "elevation_change": -5, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "stratis_airfield", "to_node": "kamino_firing_range", "distance": 2200, "bearing": 10, "road_type": "secondary", "elevation_change": 5, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "agia_marina", "to_node": "coastal_overlook_west", "distance": 900, "bearing": 250, "road_type": "path", "elevation_change": 40, "cover_rating": 0.4, "vehicle_traversable": false},
+    {"from_node": "agia_marina", "to_node": "hill_150", "distance": 350, "bearing": 10, "road_type": "path", "elevation_change": 145, "cover_rating": 0.3, "vehicle_traversable": false},
+    {"from_node": "agia_marina", "to_node": "spartan", "distance": 500, "bearing": 40, "road_type": "secondary", "elevation_change": 25, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "spartan", "to_node": "air_station_mike26", "distance": 650, "bearing": 340, "road_type": "secondary", "elevation_change": 50, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "air_station_mike26", "to_node": "jay_cove", "distance": 600, "bearing": 240, "road_type": "dirt", "elevation_change": -78, "cover_rating": 0.4, "vehicle_traversable": true},
+    {"from_node": "air_station_mike26", "to_node": "lz_connor", "distance": 700, "bearing": 50, "road_type": "dirt", "elevation_change": -20, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "lz_connor", "to_node": "girna", "distance": 400, "bearing": 300, "road_type": "secondary", "elevation_change": -25, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "lz_connor", "to_node": "lz_baldy", "distance": 450, "bearing": 30, "road_type": "path", "elevation_change": 30, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "girna", "to_node": "camp_tempest", "distance": 700, "bearing": 310, "road_type": "secondary", "elevation_change": -25, "cover_rating": 0.4, "vehicle_traversable": true},
+    {"from_node": "hill_150", "to_node": "spartan", "distance": 250, "bearing": 60, "road_type": "none", "elevation_change": -120, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "spartan", "to_node": "old_outpost", "distance": 550, "bearing": 50, "road_type": "dirt", "elevation_change": 25, "cover_rating": 0.4, "vehicle_traversable": false},
+    {"from_node": "old_outpost", "to_node": "camp_maxwell", "distance": 600, "bearing": 40, "road_type": "dirt", "elevation_change": -15, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "old_outpost", "to_node": "hill_200", "distance": 600, "bearing": 10, "road_type": "none", "elevation_change": 145, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "camp_maxwell", "to_node": "telos", "distance": 750, "bearing": 340, "road_type": "secondary", "elevation_change": -20, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "camp_maxwell", "to_node": "kamino_firing_range", "distance": 1200, "bearing": 60, "road_type": "secondary", "elevation_change": -25, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "telos", "to_node": "camp_rogain", "distance": 700, "bearing": 350, "road_type": "secondary", "elevation_change": 5, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "camp_rogain", "to_node": "north_entry", "distance": 1800, "bearing": 290, "road_type": "main", "elevation_change": -20, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "camp_tempest", "to_node": "north_entry", "distance": 650, "bearing": 10, "road_type": "secondary", "elevation_change": -5, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "hill_200", "to_node": "lz_baldy", "distance": 450, "bearing": 290, "road_type": "none", "elevation_change": -110, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "hill_200", "to_node": "telos", "distance": 500, "bearing": 30, "road_type": "none", "elevation_change": -180, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "kamino_firing_range", "to_node": "coastal_overlook_east", "distance": 500, "bearing": 290, "road_type": "path", "elevation_change": 45, "cover_rating": 0.3, "vehicle_traversable": false},
+    {"from_node": "girna", "to_node": "lz_baldy", "distance": 500, "bearing": 50, "road_type": "path", "elevation_change": 55, "cover_rating": 0.3, "vehicle_traversable": false},
+    {"from_node": "jay_cove", "to_node": "coastal_overlook_west", "distance": 350, "bearing": 200, "road_type": "path", "elevation_change": 43, "cover_rating": 0.3, "vehicle_traversable": false}
+  ]
+}

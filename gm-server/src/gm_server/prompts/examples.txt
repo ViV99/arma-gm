@@ -1,0 +1,59 @@
+Below are examples of good Game Master responses to various tactical situations.
+
+=== EXAMPLE 1: Initial Defense Setup ===
+
+STATE:
+Tick 3, mission time 45s. Pacing: calm, intensity 0.1.
+Your forces: alpha_squad (8/8, idle, agia_marina_crossroad), bravo_squad (8/8, idle, agia_marina_church), charlie_squad (8/8, idle, agia_marina_warehouse), delta_ft (4/4, idle, agia_marina_dock).
+No enemy contacts yet. Objective: defend Agia Marina (active, high priority).
+Resources: 2 infantry reserves, 1 motorized reserve, 12 artillery rounds, CAS available.
+
+RESPONSE:
+{"tick_id": 3, "commands": [
+  {"type": "position_squad", "params": {"unit": "alpha_squad", "location": "agia_marina_crossroad", "task": "defend", "sector": "S"}, "priority": "high", "reasoning": "Main intersection controls access from the south approach — key chokepoint."},
+  {"type": "set_overwatch", "params": {"unit": "delta_ft", "location": "agia_marina_tower", "watch_sector": "SE"}, "priority": "normal", "reasoning": "Fireteam provides early warning from the tower overlooking the southern and eastern approaches."},
+  {"type": "set_patrol", "params": {"unit": "charlie_squad", "route_nodes": ["agia_marina_warehouse", "agia_marina_road_west", "agia_marina_dock", "agia_marina_warehouse"]}, "priority": "normal", "reasoning": "Patrol western flank to detect flanking attempts along the coast."},
+  {"type": "set_behaviour", "params": {"unit": "bravo_squad", "behaviour": "aware", "combat_mode": "yellow"}, "priority": "low", "reasoning": "Keep reserve squad alert but not on hair trigger — they are our reaction force."}
+]}
+
+=== EXAMPLE 2: Contact Reported, Adjusting Defense ===
+
+STATE:
+Tick 12, mission time 180s. Pacing: buildup, intensity 0.45.
+Your forces: alpha_squad (8/8, defending, agia_marina_crossroad), bravo_squad (8/8, idle, agia_marina_church), charlie_squad (7/8, moving, agia_marina_road_west), delta_ft (4/4, idle, agia_marina_tower).
+Enemy contacts: enemy_1 (infantry, squad, agia_marina_road_south, heading N, confirmed, last_seen 175).
+Events: [contact_new: "Squad-sized infantry element spotted moving north on main road toward Agia Marina"].
+Objective: defend Agia Marina (active, high priority).
+
+RESPONSE:
+{"tick_id": 12, "commands": [
+  {"type": "set_alert_level", "params": {"level": "yellow"}, "priority": "high", "reasoning": "Confirmed enemy contact approaching — raise alert to prepare all units."},
+  {"type": "set_behaviour", "params": {"unit": "alpha_squad", "behaviour": "combat", "combat_mode": "red"}, "priority": "high", "reasoning": "Alpha is directly in the enemy's path at the crossroad. Switch to full combat readiness."},
+  {"type": "move_squad", "params": {"unit": "bravo_squad", "to": "agia_marina_wall_east", "task": "flank", "speed": "normal"}, "priority": "normal", "reasoning": "Move reserve to a flanking position east of the crossroad. If enemy pushes through the main road, bravo can hit them from the side."}
+]}
+
+=== EXAMPLE 3: Under Pressure, Using Fire Support ===
+
+STATE:
+Tick 22, mission time 330s. Pacing: peak, intensity 0.82.
+Your forces: alpha_squad (5/8, engaged, agia_marina_crossroad), bravo_squad (7/8, engaged, agia_marina_wall_east), charlie_squad (6/8, defending, agia_marina_road_west), delta_ft (3/4, idle, agia_marina_tower).
+Enemy contacts: enemy_1 (infantry, squad, agia_marina_south, heading N, confirmed, last_seen 328), enemy_2 (infantry, fireteam, agia_marina_bridge, heading NW, confirmed, last_seen 325), enemy_3 (vehicle, unknown, agia_marina_road_south, heading N, probable, last_seen 310).
+Events: [unit_casualties: "alpha_squad lost 2 men to enemy fire", unit_engaged: "bravo_squad in contact with enemy fireteam"].
+Resources: 2 infantry reserves, 1 motorized reserve, 10 artillery rounds, CAS available.
+
+RESPONSE:
+{"tick_id": 22, "commands": [
+  {"type": "artillery_strike", "params": {"target_node": "agia_marina_road_south", "rounds": 3}, "priority": "critical", "reasoning": "Probable enemy vehicle approaching on the main road. Artillery on the road south of town will slow the advance and potentially destroy the vehicle before it reaches our lines."},
+  {"type": "reinforce", "params": {"from_reserve": "infantry", "to": "agia_marina_north", "composition": "rifle_squad"}, "priority": "high", "reasoning": "Alpha has taken casualties and is being pressed. Fresh squad arriving from the north can reinforce or act as a fallback line."}
+]}
+
+=== EXAMPLE 4: Situation Stable, Minimal Intervention ===
+
+STATE:
+Tick 35, mission time 525s. Pacing: relax, intensity 0.25.
+Your forces: alpha_squad (5/8, defending, agia_marina_crossroad), bravo_squad (7/8, defending, agia_marina_wall_east), echo_squad (8/8, moving, agia_marina_north), charlie_squad (6/8, defending, agia_marina_road_west), delta_ft (3/4, idle, agia_marina_tower).
+No active enemy contacts (last contact lost 60s ago). Enemy pushed back.
+Objective: defend Agia Marina (active, high priority).
+
+RESPONSE:
+{"tick_id": 35, "commands": []}

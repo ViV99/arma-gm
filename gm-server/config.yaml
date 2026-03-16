@@ -1,0 +1,26 @@
+llm:
+  base_url: "http://localhost:11434"
+  model: "qwen2.5:14b"
+  temperature: 0.7
+  max_tokens: 2048
+  timeout_seconds: 30.0
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+game:
+  tick_interval_seconds: 15.0
+  anti_thrash_ticks: 3
+  max_events_buffer: 50
+  max_tick_history: 20
+
+pacing:
+  calm_to_buildup: 0.3
+  buildup_to_peak: 0.7
+  peak_to_relax: 0.4
+  relax_to_calm: 0.2
+  peak_max_ticks: 8
+
+maps_dir: "shared/maps"
+prompts_dir: "gm-server/src/gm_server/prompts"

@@ -1,0 +1,20 @@
+[package]
+name = "arma_gm_ext"
+version = "0.1.0"
+edition = "2021"
+description = "Arma 3 Game Master extension - bridges SQF to GM server"
+
+[lib]
+name = "arma_gm_ext"
+crate-type = ["cdylib"]
+
+[dependencies]
+arma-rs = "1.12"
+ureq = "2"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

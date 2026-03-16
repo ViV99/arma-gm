@@ -1,0 +1,369 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TickResponse",
+  "description": "LLM Game Master response for a single tick",
+  "type": "object",
+  "required": ["tick_id", "commands"],
+  "properties": {
+    "tick_id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "commands": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/command" }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "priority": {
+      "type": "string",
+      "enum": ["low", "normal", "high", "critical"]
+    },
+    "node_ref": {
+      "type": "string",
+      "description": "Graph node ID"
+    },
+    "sector": {
+      "type": "string",
+      "enum": ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+    },
+    "command": {
+      "type": "object",
+      "required": ["type", "params", "priority", "reasoning"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "position_squad",
+            "move_squad",
+            "move_vehicle",
+            "reinforce",
+            "set_ambush",
+            "artillery_strike",
+            "retreat",
+            "set_behaviour",
+            "spawn_group",
+            "despawn_group",
+            "set_fortify",
+            "set_patrol",
+            "set_overwatch",
+            "request_intel",
+            "set_alert_level",
+            "create_roadblock",
+            "call_cas",
+            "set_priority"
+          ]
+        },
+        "params": {
+          "type": "object"
+        },
+        "priority": { "$ref": "#/definitions/priority" },
+        "reasoning": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "position_squad" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["unit", "location", "task", "sector"],
+                "properties": {
+                  "unit": { "type": "string" },
+                  "location": { "$ref": "#/definitions/node_ref" },
+                  "task": { "type": "string", "enum": ["hold", "defend", "fortify"] },
+                  "sector": { "$ref": "#/definitions/sector" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "move_squad" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["unit", "to", "task", "speed"],
+                "properties": {
+                  "unit": { "type": "string" },
+                  "to": { "$ref": "#/definitions/node_ref" },
+                  "task": { "type": "string", "enum": ["advance", "flank", "retreat", "reposition"] },
+                  "speed": { "type": "string", "enum": ["slow", "normal", "full"] }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "move_vehicle" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["unit", "to", "task"],
+                "properties": {
+                  "unit": { "type": "string" },
+                  "to": { "$ref": "#/definitions/node_ref" },
+                  "task": { "type": "string", "enum": ["transport", "support", "patrol"] }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "reinforce" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["from_reserve", "to", "composition"],
+                "properties": {
+                  "from_reserve": { "type": "string", "enum": ["infantry", "motorized"] },
+                  "to": { "$ref": "#/definitions/node_ref" },
+                  "composition": { "type": "string" },
+                  "route": { "$ref": "#/definitions/node_ref" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "set_ambush" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["units", "location", "trigger_zone"],
+                "properties": {
+                  "units": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+                  "location": { "$ref": "#/definitions/node_ref" },
+                  "trigger_zone": { "$ref": "#/definitions/node_ref" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "artillery_strike" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["target_node", "rounds"],
+                "properties": {
+                  "target_node": { "$ref": "#/definitions/node_ref" },
+                  "rounds": { "type": "integer", "minimum": 1, "maximum": 6 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "retreat" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["unit", "fallback_position"],
+                "properties": {
+                  "unit": { "type": "string" },
+                  "fallback_position": { "$ref": "#/definitions/node_ref" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "set_behaviour" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["unit", "behaviour", "combat_mode"],
+                "properties": {
+                  "unit": { "type": "string" },
+                  "behaviour": { "type": "string", "enum": ["safe", "aware", "combat", "stealth"] },
+                  "combat_mode": { "type": "string", "enum": ["blue", "green", "white", "yellow", "red"] }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "spawn_group" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["composition", "location", "task"],
+                "properties": {
+                  "composition": { "type": "string" },
+                  "location": { "$ref": "#/definitions/node_ref" },
+                  "task": { "type": "string" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "despawn_group" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["unit", "reason"],
+                "properties": {
+                  "unit": { "type": "string" },
+                  "reason": { "type": "string" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "set_fortify" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["unit", "location"],
+                "properties": {
+                  "unit": { "type": "string" },
+                  "location": { "$ref": "#/definitions/node_ref" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "set_patrol" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["unit", "route_nodes"],
+                "properties": {
+                  "unit": { "type": "string" },
+                  "route_nodes": { "type": "array", "items": { "$ref": "#/definitions/node_ref" }, "minItems": 2 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "set_overwatch" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["unit", "location", "watch_sector"],
+                "properties": {
+                  "unit": { "type": "string" },
+                  "location": { "$ref": "#/definitions/node_ref" },
+                  "watch_sector": { "$ref": "#/definitions/sector" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "request_intel" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["area"],
+                "properties": {
+                  "area": { "$ref": "#/definitions/node_ref" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "set_alert_level" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["level"],
+                "properties": {
+                  "level": { "type": "string", "enum": ["green", "yellow", "orange", "red"] }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "create_roadblock" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["location", "unit"],
+                "properties": {
+                  "location": { "$ref": "#/definitions/node_ref" },
+                  "unit": { "type": "string" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "call_cas" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["target_node", "type"],
+                "properties": {
+                  "target_node": { "$ref": "#/definitions/node_ref" },
+                  "type": { "type": "string", "enum": ["gun_run", "bomb", "rocket"] }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "set_priority" } } },
+          "then": {
+            "properties": {
+              "params": {
+                "type": "object",
+                "required": ["objective", "priority"],
+                "properties": {
+                  "objective": { "type": "string" },
+                  "priority": { "$ref": "#/definitions/priority" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,67 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+pip-log.txt
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# ── Rust ──────────────────────────────────────────────────────────────────────
+arma-extension/target/
+
+# ── Arma 3 ───────────────────────────────────────────────────────────────────
+# HEMTT build output (v2: .hemtt/, v1: .hemttout/)
+arma-mod/.hemtt/
+arma-mod/.hemttout/
+
+# Built PBOs and signatures
+*.pbo
+*.bisign
+*.bikey
+*.biprivatekey
+
+# Arma crash/report logs
+*.rpt
+*.mdmp
+
+# ── Config overrides (tracked default: config.yaml) ───────────────────────────
+gm-server/config.local.yaml
+gm-server/config.local.yml
+.env
+.env.*
+!.env.example
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+Thumbs.db
+desktop.ini
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+*.log
+*.tmp

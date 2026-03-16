@@ -1,0 +1,398 @@
+{
+  "map": "Stratis",
+  "level": 1,
+  "parent_node": "agia_marina",
+  "description": "Tactical-level graph for Agia Marina town center and surroundings",
+  "nodes": [
+    {
+      "id": "agia_marina_crossroad",
+      "name": "Main Crossroad",
+      "type": "intersection",
+      "position": [2300, 0, 2600],
+      "elevation": 5,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.3,
+        "vehicle_access": true,
+        "building_count": 0,
+        "tactical_suitability": ["defense"]
+      }
+    },
+    {
+      "id": "agia_marina_church",
+      "name": "Church Square",
+      "type": "landmark",
+      "position": [2320, 0, 2620],
+      "elevation": 7,
+      "properties": {
+        "cover_quality": 0.6,
+        "dominance": 0.4,
+        "vehicle_access": true,
+        "building_count": 3,
+        "tactical_suitability": ["defense", "overwatch"]
+      }
+    },
+    {
+      "id": "agia_marina_east",
+      "name": "Eastern Residential",
+      "type": "residential",
+      "position": [2370, 0, 2610],
+      "elevation": 8,
+      "properties": {
+        "cover_quality": 0.7,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 8,
+        "tactical_suitability": ["defense", "ambush"]
+      }
+    },
+    {
+      "id": "agia_marina_west",
+      "name": "Western Residential",
+      "type": "residential",
+      "position": [2230, 0, 2610],
+      "elevation": 6,
+      "properties": {
+        "cover_quality": 0.7,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 7,
+        "tactical_suitability": ["defense", "ambush"]
+      }
+    },
+    {
+      "id": "agia_marina_north",
+      "name": "Northern Approach",
+      "type": "approach",
+      "position": [2300, 0, 2680],
+      "elevation": 12,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 2,
+        "tactical_suitability": ["defense"]
+      }
+    },
+    {
+      "id": "agia_marina_south",
+      "name": "Southern Approach",
+      "type": "approach",
+      "position": [2300, 0, 2520],
+      "elevation": 4,
+      "properties": {
+        "cover_quality": 0.2,
+        "dominance": 0.1,
+        "vehicle_access": true,
+        "building_count": 1,
+        "tactical_suitability": []
+      }
+    },
+    {
+      "id": "agia_marina_market",
+      "name": "Central Market",
+      "type": "commercial",
+      "position": [2290, 0, 2615],
+      "elevation": 6,
+      "properties": {
+        "cover_quality": 0.5,
+        "dominance": 0.3,
+        "vehicle_access": true,
+        "building_count": 4,
+        "tactical_suitability": ["defense"]
+      }
+    },
+    {
+      "id": "agia_marina_dock",
+      "name": "Waterfront Dock",
+      "type": "infrastructure",
+      "position": [2200, 0, 2560],
+      "elevation": 1,
+      "properties": {
+        "cover_quality": 0.2,
+        "dominance": 0.1,
+        "vehicle_access": true,
+        "building_count": 2,
+        "tactical_suitability": []
+      }
+    },
+    {
+      "id": "agia_marina_hill_east",
+      "name": "Eastern Hill",
+      "type": "terrain",
+      "position": [2410, 0, 2640],
+      "elevation": 25,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.6,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["overwatch"]
+      }
+    },
+    {
+      "id": "agia_marina_hill_west",
+      "name": "Western Hill",
+      "type": "terrain",
+      "position": [2180, 0, 2640],
+      "elevation": 20,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.5,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["overwatch"]
+      }
+    },
+    {
+      "id": "agia_marina_school",
+      "name": "School Building",
+      "type": "building",
+      "position": [2340, 0, 2640],
+      "elevation": 8,
+      "properties": {
+        "cover_quality": 0.8,
+        "dominance": 0.4,
+        "vehicle_access": false,
+        "building_count": 1,
+        "tactical_suitability": ["defense", "overwatch"]
+      }
+    },
+    {
+      "id": "agia_marina_gas_station",
+      "name": "Gas Station",
+      "type": "commercial",
+      "position": [2260, 0, 2570],
+      "elevation": 4,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.1,
+        "vehicle_access": true,
+        "building_count": 1,
+        "tactical_suitability": []
+      }
+    },
+    {
+      "id": "agia_marina_warehouse",
+      "name": "Warehouse Area",
+      "type": "industrial",
+      "position": [2220, 0, 2650],
+      "elevation": 5,
+      "properties": {
+        "cover_quality": 0.6,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 3,
+        "tactical_suitability": ["defense", "staging"]
+      }
+    },
+    {
+      "id": "agia_marina_parking",
+      "name": "Parking Lot",
+      "type": "open_area",
+      "position": [2280, 0, 2590],
+      "elevation": 4,
+      "properties": {
+        "cover_quality": 0.1,
+        "dominance": 0.1,
+        "vehicle_access": true,
+        "building_count": 0,
+        "tactical_suitability": ["staging"]
+      }
+    },
+    {
+      "id": "agia_marina_road_north",
+      "name": "North Road",
+      "type": "road",
+      "position": [2300, 0, 2720],
+      "elevation": 15,
+      "properties": {
+        "cover_quality": 0.2,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 0,
+        "tactical_suitability": []
+      }
+    },
+    {
+      "id": "agia_marina_road_south",
+      "name": "South Road to Airfield",
+      "type": "road",
+      "position": [2310, 0, 2480],
+      "elevation": 3,
+      "properties": {
+        "cover_quality": 0.1,
+        "dominance": 0.1,
+        "vehicle_access": true,
+        "building_count": 0,
+        "tactical_suitability": []
+      }
+    },
+    {
+      "id": "agia_marina_road_west",
+      "name": "West Coastal Road",
+      "type": "road",
+      "position": [2160, 0, 2590],
+      "elevation": 3,
+      "properties": {
+        "cover_quality": 0.2,
+        "dominance": 0.1,
+        "vehicle_access": true,
+        "building_count": 0,
+        "tactical_suitability": []
+      }
+    },
+    {
+      "id": "agia_marina_alley_1",
+      "name": "Northern Alley",
+      "type": "passage",
+      "position": [2310, 0, 2635],
+      "elevation": 7,
+      "properties": {
+        "cover_quality": 0.8,
+        "dominance": 0.1,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["ambush"]
+      }
+    },
+    {
+      "id": "agia_marina_alley_2",
+      "name": "Southern Alley",
+      "type": "passage",
+      "position": [2290, 0, 2595],
+      "elevation": 5,
+      "properties": {
+        "cover_quality": 0.8,
+        "dominance": 0.1,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["ambush"]
+      }
+    },
+    {
+      "id": "agia_marina_rooftop_north",
+      "name": "Northern Rooftop",
+      "type": "elevated",
+      "position": [2320, 0, 2650],
+      "elevation": 15,
+      "properties": {
+        "cover_quality": 0.5,
+        "dominance": 0.7,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["overwatch", "defense"]
+      }
+    },
+    {
+      "id": "agia_marina_rooftop_south",
+      "name": "Southern Rooftop",
+      "type": "elevated",
+      "position": [2290, 0, 2580],
+      "elevation": 12,
+      "properties": {
+        "cover_quality": 0.5,
+        "dominance": 0.6,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["overwatch"]
+      }
+    },
+    {
+      "id": "agia_marina_garden",
+      "name": "Town Garden",
+      "type": "open_area",
+      "position": [2340, 0, 2600],
+      "elevation": 6,
+      "properties": {
+        "cover_quality": 0.3,
+        "dominance": 0.2,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": []
+      }
+    },
+    {
+      "id": "agia_marina_wall_east",
+      "name": "Eastern Stone Wall",
+      "type": "cover",
+      "position": [2380, 0, 2590],
+      "elevation": 7,
+      "properties": {
+        "cover_quality": 0.9,
+        "dominance": 0.3,
+        "vehicle_access": false,
+        "building_count": 0,
+        "tactical_suitability": ["defense", "ambush"]
+      }
+    },
+    {
+      "id": "agia_marina_bridge",
+      "name": "Road Bridge",
+      "type": "infrastructure",
+      "position": [2270, 0, 2540],
+      "elevation": 4,
+      "properties": {
+        "cover_quality": 0.2,
+        "dominance": 0.2,
+        "vehicle_access": true,
+        "building_count": 0,
+        "tactical_suitability": ["defense"]
+      }
+    },
+    {
+      "id": "agia_marina_tower",
+      "name": "Communication Tower",
+      "type": "elevated",
+      "position": [2360, 0, 2660],
+      "elevation": 30,
+      "properties": {
+        "cover_quality": 0.2,
+        "dominance": 0.9,
+        "vehicle_access": false,
+        "building_count": 1,
+        "tactical_suitability": ["overwatch"]
+      }
+    }
+  ],
+  "edges": [
+    {"from_node": "agia_marina_road_south", "to_node": "agia_marina_south", "distance": 50, "bearing": 0, "road_type": "main", "elevation_change": 1, "cover_rating": 0.1, "vehicle_traversable": true},
+    {"from_node": "agia_marina_south", "to_node": "agia_marina_bridge", "distance": 40, "bearing": 330, "road_type": "main", "elevation_change": 0, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "agia_marina_bridge", "to_node": "agia_marina_gas_station", "distance": 30, "bearing": 350, "road_type": "main", "elevation_change": 0, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "agia_marina_gas_station", "to_node": "agia_marina_parking", "distance": 30, "bearing": 20, "road_type": "main", "elevation_change": 0, "cover_rating": 0.1, "vehicle_traversable": true},
+    {"from_node": "agia_marina_parking", "to_node": "agia_marina_crossroad", "distance": 25, "bearing": 10, "road_type": "main", "elevation_change": 1, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "agia_marina_crossroad", "to_node": "agia_marina_market", "distance": 20, "bearing": 340, "road_type": "secondary", "elevation_change": 1, "cover_rating": 0.4, "vehicle_traversable": true},
+    {"from_node": "agia_marina_crossroad", "to_node": "agia_marina_church", "distance": 30, "bearing": 30, "road_type": "secondary", "elevation_change": 2, "cover_rating": 0.4, "vehicle_traversable": true},
+    {"from_node": "agia_marina_crossroad", "to_node": "agia_marina_garden", "distance": 40, "bearing": 80, "road_type": "path", "elevation_change": 1, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "agia_marina_market", "to_node": "agia_marina_west", "distance": 50, "bearing": 280, "road_type": "secondary", "elevation_change": 0, "cover_rating": 0.5, "vehicle_traversable": true},
+    {"from_node": "agia_marina_market", "to_node": "agia_marina_warehouse", "distance": 60, "bearing": 310, "road_type": "secondary", "elevation_change": -1, "cover_rating": 0.4, "vehicle_traversable": true},
+    {"from_node": "agia_marina_market", "to_node": "agia_marina_alley_2", "distance": 25, "bearing": 170, "road_type": "path", "elevation_change": -1, "cover_rating": 0.8, "vehicle_traversable": false},
+    {"from_node": "agia_marina_church", "to_node": "agia_marina_alley_1", "distance": 20, "bearing": 340, "road_type": "path", "elevation_change": 0, "cover_rating": 0.7, "vehicle_traversable": false},
+    {"from_node": "agia_marina_church", "to_node": "agia_marina_east", "distance": 50, "bearing": 80, "road_type": "secondary", "elevation_change": 1, "cover_rating": 0.5, "vehicle_traversable": true},
+    {"from_node": "agia_marina_church", "to_node": "agia_marina_school", "distance": 30, "bearing": 20, "road_type": "path", "elevation_change": 1, "cover_rating": 0.5, "vehicle_traversable": false},
+    {"from_node": "agia_marina_alley_1", "to_node": "agia_marina_school", "distance": 30, "bearing": 30, "road_type": "path", "elevation_change": 1, "cover_rating": 0.7, "vehicle_traversable": false},
+    {"from_node": "agia_marina_alley_1", "to_node": "agia_marina_rooftop_north", "distance": 20, "bearing": 10, "road_type": "none", "elevation_change": 8, "cover_rating": 0.3, "vehicle_traversable": false},
+    {"from_node": "agia_marina_school", "to_node": "agia_marina_tower", "distance": 30, "bearing": 50, "road_type": "path", "elevation_change": 22, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "agia_marina_school", "to_node": "agia_marina_north", "distance": 40, "bearing": 350, "road_type": "secondary", "elevation_change": 4, "cover_rating": 0.4, "vehicle_traversable": true},
+    {"from_node": "agia_marina_north", "to_node": "agia_marina_road_north", "distance": 50, "bearing": 0, "road_type": "main", "elevation_change": 3, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "agia_marina_north", "to_node": "agia_marina_warehouse", "distance": 60, "bearing": 280, "road_type": "secondary", "elevation_change": -7, "cover_rating": 0.4, "vehicle_traversable": true},
+    {"from_node": "agia_marina_north", "to_node": "agia_marina_hill_east", "distance": 80, "bearing": 60, "road_type": "none", "elevation_change": 13, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "agia_marina_warehouse", "to_node": "agia_marina_west", "distance": 40, "bearing": 180, "road_type": "secondary", "elevation_change": 1, "cover_rating": 0.5, "vehicle_traversable": true},
+    {"from_node": "agia_marina_warehouse", "to_node": "agia_marina_hill_west", "distance": 40, "bearing": 290, "road_type": "none", "elevation_change": 15, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "agia_marina_west", "to_node": "agia_marina_road_west", "distance": 70, "bearing": 250, "road_type": "secondary", "elevation_change": -3, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "agia_marina_west", "to_node": "agia_marina_dock", "distance": 55, "bearing": 210, "road_type": "secondary", "elevation_change": -5, "cover_rating": 0.3, "vehicle_traversable": true},
+    {"from_node": "agia_marina_dock", "to_node": "agia_marina_road_west", "distance": 50, "bearing": 290, "road_type": "secondary", "elevation_change": 2, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "agia_marina_east", "to_node": "agia_marina_wall_east", "distance": 25, "bearing": 160, "road_type": "path", "elevation_change": -1, "cover_rating": 0.6, "vehicle_traversable": false},
+    {"from_node": "agia_marina_east", "to_node": "agia_marina_hill_east", "distance": 50, "bearing": 40, "road_type": "none", "elevation_change": 17, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "agia_marina_wall_east", "to_node": "agia_marina_garden", "distance": 40, "bearing": 280, "road_type": "path", "elevation_change": -1, "cover_rating": 0.5, "vehicle_traversable": false},
+    {"from_node": "agia_marina_garden", "to_node": "agia_marina_alley_2", "distance": 45, "bearing": 240, "road_type": "path", "elevation_change": -1, "cover_rating": 0.4, "vehicle_traversable": false},
+    {"from_node": "agia_marina_alley_2", "to_node": "agia_marina_rooftop_south", "distance": 20, "bearing": 200, "road_type": "none", "elevation_change": 7, "cover_rating": 0.3, "vehicle_traversable": false},
+    {"from_node": "agia_marina_alley_2", "to_node": "agia_marina_parking", "distance": 20, "bearing": 170, "road_type": "path", "elevation_change": -1, "cover_rating": 0.5, "vehicle_traversable": false},
+    {"from_node": "agia_marina_road_west", "to_node": "agia_marina_bridge", "distance": 100, "bearing": 120, "road_type": "secondary", "elevation_change": 1, "cover_rating": 0.2, "vehicle_traversable": true},
+    {"from_node": "agia_marina_tower", "to_node": "agia_marina_hill_east", "distance": 50, "bearing": 70, "road_type": "none", "elevation_change": -5, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "agia_marina_rooftop_north", "to_node": "agia_marina_school", "distance": 20, "bearing": 30, "road_type": "none", "elevation_change": -7, "cover_rating": 0.3, "vehicle_traversable": false},
+    {"from_node": "agia_marina_hill_west", "to_node": "agia_marina_road_west", "distance": 60, "bearing": 210, "road_type": "none", "elevation_change": -17, "cover_rating": 0.2, "vehicle_traversable": false},
+    {"from_node": "agia_marina_south", "to_node": "agia_marina_wall_east", "distance": 90, "bearing": 60, "road_type": "path", "elevation_change": 3, "cover_rating": 0.3, "vehicle_traversable": false},
+    {"from_node": "agia_marina_gas_station", "to_node": "agia_marina_dock", "distance": 60, "bearing": 290, "road_type": "secondary", "elevation_change": -3, "cover_rating": 0.2, "vehicle_traversable": true}
+  ]
+}
