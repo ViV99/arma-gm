@@ -8,9 +8,15 @@ Emulates the Arma 3 SQF layer: sends game state to the GM server and prints the 
 
 ### Prerequisites
 
+`httpx` is a dependency of `gm-server`. Install it by setting up the GM server venv:
+
 ```bash
-pip install httpx  # or: pip install -e gm-server/
+cd gm-server
+python -m venv .venv && source .venv/bin/activate
+pip install -e .
 ```
+
+Then run the mock client from that activated environment.
 
 ### Usage
 
@@ -18,40 +24,38 @@ pip install httpx  # or: pip install -e gm-server/
 # Interactive mode
 python tools/mock_arma_client.py --url http://localhost:8080
 
-# Auto mode: sends a tick every N seconds automatically
+# Auto mode: run 20 ticks with 2 s delay (defaults)
 python tools/mock_arma_client.py --url http://localhost:8080 --auto
-python tools/mock_arma_client.py --url http://localhost:8080 --auto --interval 5
 
-# Custom state file
-python tools/mock_arma_client.py --url http://localhost:8080 \
-  --state my_state.json --auto
+# Custom number of ticks and delay
+python tools/mock_arma_client.py --url http://localhost:8080 --auto --ticks 30 --delay 5
 ```
 
 ### Interactive commands
 
 | Key | Action |
 |-----|--------|
-| `Enter` | Send one tick with the loaded state |
+| `Enter` | Send one tick |
 | `d` | Send an operator directive (prompts for text and priority) |
 | `o` | Send a direct command override (prompts for JSON) |
 | `s` | Show current server status |
+| `p` | Pause GM decision-making |
+| `r` | Resume GM decision-making |
 | `q` | Quit |
 
-### Default state file
-
-`gm-server/src/gm_server/tests/fixtures/sample_state.json` — an Agia Marina scenario with 5 OPFOR units, 2 enemy contacts, 3 objectives, and recent events.
-
-You can edit this file or create your own to test specific scenarios.
+The scenario (Agia Marina defense with 4 OPFOR squads + 1 motorized vs 2 BLUFOR squads) is hardcoded in the script. Edit `INITIAL_FORCES` / `INITIAL_OBJECTIVES` at the top of the file to customise.
 
 ### Example output
 
 ```
-[Tick 15] Sent. Response:
-  commands (2):
-    [HIGH] move_squad: grp_bravo_1 → agia_marina_road_south
-           "Enemy approaching from south, intercept with reserve"
-    [NORMAL] set_behaviour: grp_alpha_1 (combat/red)
-           "Crossroad under direct threat, increase readiness"
+  SERVER RESPONSE: 2 command(s)
+────────────────────────────────────────────────
+    CMD: move_squad
+         params: {"unit": "grp_bravo_1", "to": "agia_marina_road_south", "task": "intercept"}
+         reason: Enemy squad approaching from south, send reserve to intercept
+    CMD: set_behaviour
+         params: {"unit": "grp_alpha_1", "behaviour": "COMBAT", "combat_mode": "RED"}
+         reason: Crossroad under direct threat, increase readiness
 ```
 
 ---
@@ -63,7 +67,7 @@ Renders a map graph JSON file as a 2D plot using networkx and matplotlib. Useful
 ### Prerequisites
 
 ```bash
-pip install networkx matplotlib
+cd tools && poetry install
 ```
 
 ### Usage

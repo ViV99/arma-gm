@@ -26,7 +26,7 @@ The LLM decides **strategy** (where to attack, when to commit reserves, how to a
 
 ## Prerequisites
 
-- **Python 3.11+** with pip
+- **Python 3.11+** with pip (for `gm-server/`) and **Poetry** (for `tools/`)
 - **Ollama** with a 13B–30B model (e.g. `qwen2.5:14b`, `mistral:13b`, `llama3:13b`)
 - **Arma 3** (Windows) with the mod loaded for in-game use
 - **Rust + cargo** + `mingw-w64` for building the extension DLL on macOS
@@ -44,7 +44,7 @@ python -m venv .venv && source .venv/bin/activate
 pip install -e .
 python -m gm_server.main --port 8080
 
-# 3. Test with the mock client
+# 3. Test with the mock client (gm-server venv must be active — provides httpx)
 python tools/mock_arma_client.py --url http://localhost:8080 --auto
 ```
 
