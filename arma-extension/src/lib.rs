@@ -28,6 +28,8 @@ fn init() -> Extension {
     Extension::build()
         .command("config", command_config)
         .command("send_state", command_send_state)
+        .command("send_graph", command_send_graph)
+        .command("check_cache", command_check_cache)
         .command("ping", command_ping)
         .finish()
 }
@@ -46,6 +48,34 @@ fn command_send_state(ctx: Context, json: String) -> &'static str {
     let url = format!("{}/api/v1/tick", get_server_url());
     std::thread::spawn(move || match http_client::post_json(&url, &json) {
         Ok(response) => chunking::send_response(ctx, response),
+        Err(err) => {
+            let _ = ctx.callback_data("ArmaGM", "error", Some(err));
+        }
+    });
+    ""
+}
+
+/// Send graph JSON to GM server for processing (non-blocking).
+/// SQF: "ArmaGM" callExtension ["send_graph", [_jsonString]]
+/// Returns "" immediately; response comes via ExtensionCallback "graph_result".
+fn command_send_graph(ctx: Context, json: String) -> &'static str {
+    let url = format!("{}/api/v1/graph", get_server_url());
+    std::thread::spawn(move || match http_client::post_json(&url, &json) {
+        Ok(response) => chunking::send_response_tagged(ctx, "graph_result", response),
+        Err(err) => {
+            let _ = ctx.callback_data("ArmaGM", "error", Some(err));
+        }
+    });
+    ""
+}
+
+/// Check if the GM server has a cached graph for the given map (non-blocking).
+/// SQF: "ArmaGM" callExtension ["check_cache", [_mapName]]
+/// Returns "" immediately; response comes via ExtensionCallback "cache_result".
+fn command_check_cache(ctx: Context, map_name: String) -> &'static str {
+    let url = format!("{}/api/v1/graph/cache/{}", get_server_url(), map_name);
+    std::thread::spawn(move || match http_client::get(&url) {
+        Ok(response) => chunking::send_response_tagged(ctx, "cache_result", response),
         Err(err) => {
             let _ = ctx.callback_data("ArmaGM", "error", Some(err));
         }

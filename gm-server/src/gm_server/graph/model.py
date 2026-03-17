@@ -33,6 +33,25 @@ class MapGraph(BaseModel):
     nodes: dict[str, GraphNode] = {}
     edges: list[GraphEdge] = []
 
+    def to_dict(self) -> dict:
+        """Serialize to plain dict (inverse of from_dict / load_from_json)."""
+        nodes = []
+        for node in self.nodes.values():
+            nd: dict = {
+                "id": node.id,
+                "name": node.name,
+                "level": node.level,
+                "position": list(node.position),
+                "elevation": node.elevation,
+            }
+            if node.properties:
+                nd["properties"] = node.properties
+            nodes.append(nd)
+        edges = []
+        for edge in self.edges:
+            edges.append(edge.model_dump())
+        return {"nodes": nodes, "edges": edges}
+
     def get_node(self, node_id: str) -> GraphNode | None:
         return self.nodes.get(node_id)
 

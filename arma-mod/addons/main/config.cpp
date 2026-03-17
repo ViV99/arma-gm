@@ -32,6 +32,10 @@ class CfgFunctions {
             class fnc_nearestNode {};
             class fnc_graphExtract {};
             class fnc_graphUpdate {};
+            class fnc_graphGenInit {};
+            class fnc_graphGenRoads {};
+            class fnc_graphGenL0 {};
+            class fnc_graphGenL1 {};
             class fnc_cmdArtilleryStrike {};
             class fnc_cmdSetAmbush {};
             class fnc_cmdSetFortify {};

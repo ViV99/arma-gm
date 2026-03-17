@@ -1,9 +1,14 @@
 import logging
+from typing import Any
+
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from gm_server.graph.cache import GraphCache
+from gm_server.graph.model import MapGraph
+from gm_server.graph.registry import GraphRegistry
 from gm_server.models.game_state import GameState
 from gm_server.models.commands import Command, TickResponse
 from gm_server.logic.decision_loop import DecisionLoop
@@ -29,10 +34,23 @@ class ControlRequest(BaseModel):
     action: str  # "pause" or "resume"
 
 
+class GraphRequest(BaseModel):
+    map: str
+    level: int  # 0 = strategic, 1 = tactical
+    parent_node: str | None = None
+    nodes: list[dict[str, Any]]
+    edges: list[dict[str, Any]]
+
+
 # --- App factory ---
 
 
-def create_app(decision_loop: DecisionLoop, state_manager: StateManager) -> FastAPI:
+def create_app(
+    decision_loop: DecisionLoop,
+    state_manager: StateManager,
+    graph_registry: GraphRegistry,
+    graph_cache: GraphCache,
+) -> FastAPI:
     app = FastAPI(title="Arma 3 Game Master", version="0.1.0")
 
     app.add_middleware(
@@ -45,6 +63,8 @@ def create_app(decision_loop: DecisionLoop, state_manager: StateManager) -> Fast
     # Store references on app state
     app.state.decision_loop = decision_loop
     app.state.state_manager = state_manager
+    app.state.graph_registry = graph_registry
+    app.state.graph_cache = graph_cache
 
     @app.post("/api/v1/tick", response_model=TickResponse)
     async def tick(game_state: GameState):
@@ -89,6 +109,46 @@ def create_app(decision_loop: DecisionLoop, state_manager: StateManager) -> Fast
         summary["pacing_phase"] = pacing.current_phase.value
         summary["intensity"] = pacing.intensity
         return summary
+
+    @app.post("/api/v1/graph")
+    async def receive_graph(req: GraphRequest):
+        """Receive a generated graph from SQF, store in registry and cache."""
+        try:
+            data = {"nodes": req.nodes, "edges": req.edges, "level": req.level}
+            graph = MapGraph.from_dict(data)
+
+            registry = app.state.graph_registry
+            cache = app.state.graph_cache
+
+            if req.level == 0:
+                registry.set_strategic(graph)
+                cache.save(req.map, 0, None, graph)
+            elif req.level == 1:
+                zone_id = req.parent_node or "unknown"
+                registry.set_tactical(zone_id, graph)
+                cache.save(req.map, 1, zone_id, graph)
+
+            nodes = registry.get_all_node_positions()
+            return {"status": "ok", "nodes": nodes}
+        except Exception as e:
+            logger.exception("Failed to process graph submission")
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @app.get("/api/v1/graph/cache/{map_name}")
+    async def check_graph_cache(map_name: str):
+        """Check if cached graphs exist for a map and load them."""
+        registry = app.state.graph_registry
+        cache = app.state.graph_cache
+
+        if cache.exists(map_name):
+            strategic, tactical = cache.load_all(map_name)
+            if strategic:
+                registry.set_strategic(strategic)
+            for zone_id, tac_graph in tactical.items():
+                registry.set_tactical(zone_id, tac_graph)
+            nodes = registry.get_all_node_positions()
+            return {"cached": True, "nodes": nodes}
+        return {"cached": False, "nodes": []}
 
     @app.get("/ui", response_class=HTMLResponse)
     async def operator_ui():

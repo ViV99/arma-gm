@@ -17,6 +17,14 @@ ArmaGM_objectives = [];    // [[obj_id, status, threat_level, node_id], ...]
 ArmaGM_contacts = [];      // [[contact_id, type, est_size, node, confidence, direction, last_seen], ...]
 ArmaGM_intelNode = "";     // Node requested for L2 extraction (cleared after each tick)
 ArmaGM_nodeUpdates = createHashMap; // Dynamic node property overrides
+ArmaGM_graphReady = false;          // Set true when graph generation completes
+ArmaGM_roadGraph = createHashMap;   // Road connectivity: road → [connected roads]
+ArmaGM_roadInfo = createHashMap;    // Road metadata: road → type string
+ArmaGM_roadPositions = createHashMap; // Road position cache: road → [x,y,z]
+ArmaGM_cacheResult = "";            // Set by cache_result callback
+ArmaGM_graphResult = "";            // Set by graph_result callback
+ArmaGM_graphChunkBuffer = [];       // Buffer for chunked graph responses
+ArmaGM_cacheChunkBuffer = [];       // Buffer for chunked cache responses
 
 // Configure extension server URL (can be overridden before init)
 private _serverUrl = if (isNil "ArmaGM_serverUrl") then { "http://127.0.0.1:8080" } else { ArmaGM_serverUrl };
@@ -72,7 +80,11 @@ addMissionEventHandler ["EntityKilled", {
     };
 }];
 
-// Start tick scheduler
-[] spawn ArmaGM_fnc_tick;
+// Start graph generation, then tick scheduler
+[] spawn {
+    [] call ArmaGM_fnc_graphGenInit;
+    waitUntil { ArmaGM_graphReady };
+    [] spawn ArmaGM_fnc_tick;
+};
 
 ["ArmaGM initialized. Tick interval: 15s, Server: %1", _serverUrl] call BIS_fnc_logFormat;

@@ -37,6 +37,36 @@ switch (_function) do {
     case "error": {
         ["ArmaGM error from extension: %1", _data] call BIS_fnc_logFormat;
     };
+
+    // --- Graph result callbacks ---
+    case "graph_result": {
+        ArmaGM_graphResult = _data;
+    };
+    case "graph_result_chunk_begin": {
+        ArmaGM_graphChunkBuffer = [];
+    };
+    case "graph_result_chunk_data": {
+        ArmaGM_graphChunkBuffer pushBack _data;
+    };
+    case "graph_result_chunk_end": {
+        ArmaGM_graphResult = ArmaGM_graphChunkBuffer joinString "";
+        ArmaGM_graphChunkBuffer = [];
+    };
+
+    // --- Cache result callbacks ---
+    case "cache_result": {
+        ArmaGM_cacheResult = _data;
+    };
+    case "cache_result_chunk_begin": {
+        ArmaGM_cacheChunkBuffer = [];
+    };
+    case "cache_result_chunk_data": {
+        ArmaGM_cacheChunkBuffer pushBack _data;
+    };
+    case "cache_result_chunk_end": {
+        ArmaGM_cacheResult = ArmaGM_cacheChunkBuffer joinString "";
+        ArmaGM_cacheChunkBuffer = [];
+    };
 };
 
 // Internal function to process parsed commands JSON

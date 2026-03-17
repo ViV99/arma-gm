@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 
 from gm_server.graph.model import MapGraph
+from gm_server.graph.registry import GraphRegistry
 from gm_server.models.game_state import GameState
 
 logger = logging.getLogger(__name__)
@@ -18,11 +19,8 @@ class ContextResult:
 class ContextBuilder:
     MAX_TACTICAL_ZONES = 2
 
-    def __init__(
-        self, strategic_graph: MapGraph, tactical_graphs: dict[str, MapGraph]
-    ) -> None:
-        self.strategic = strategic_graph
-        self.tactical = tactical_graphs  # keyed by L0 node id
+    def __init__(self, registry: GraphRegistry) -> None:
+        self.registry = registry
 
     def build_context(
         self, game_state: GameState, active_zones: list[str] | None = None
@@ -32,13 +30,16 @@ class ContextBuilder:
 
         # Apply dynamic node overrides from SQF
         node_updates = game_state.graph.node_updates
-        result.strategic = self.strategic.with_updates(node_updates)
+        strategic = self.registry.get_strategic()
+        if strategic:
+            result.strategic = strategic.with_updates(node_updates)
 
         # Determine which zones need tactical detail
         zones = active_zones or self._detect_active_zones(game_state)
         for zone_id in zones[: self.MAX_TACTICAL_ZONES]:
-            if zone_id in self.tactical:
-                result.tactical_zones[zone_id] = self.tactical[zone_id].with_updates(node_updates)
+            tac = self.registry.get_tactical(zone_id)
+            if tac:
+                result.tactical_zones[zone_id] = tac.with_updates(node_updates)
 
         # Include L2 local graph if SQF sent one
         if game_state.graph.local:
@@ -71,10 +72,13 @@ class ContextBuilder:
         Convention: tactical nodes are prefixed with strategic node id,
         e.g. "agia_marina_east" -> "agia_marina".
         """
-        for strategic_id in self.tactical:
+        strategic = self.registry.get_strategic()
+        if not strategic:
+            return None
+        for strategic_id in strategic.nodes:
             if node_id.startswith(strategic_id):
                 return strategic_id
         # Fallback: check if it IS a strategic node
-        if self.strategic.node_exists(node_id):
+        if strategic.node_exists(node_id):
             return node_id
         return None

@@ -1,6 +1,7 @@
 import logging
 
 from gm_server.graph.model import MapGraph
+from gm_server.graph.registry import GraphRegistry
 from gm_server.logic.state_manager import StateManager
 from gm_server.models.commands import COMMAND_TYPES, Command
 
@@ -49,17 +50,18 @@ RESOURCE_COMMANDS = {
 
 class Validator:
     def __init__(
-        self, state_manager: StateManager, graph: MapGraph, anti_thrash_ticks: int = 3
+        self, state_manager: StateManager, registry: GraphRegistry, anti_thrash_ticks: int = 3
     ):
         self.state_manager = state_manager
-        self.graph = graph
+        self.registry = registry
         self.anti_thrash_ticks = anti_thrash_ticks
 
     def validate(self, commands: list[Command]) -> list[Command]:
         """Validate commands and return only valid ones."""
+        graph = self.registry.get_combined()
         valid = []
         for cmd in commands:
-            reasons = self._check_command(cmd)
+            reasons = self._check_command(cmd, graph)
             if reasons:
                 logger.warning("Command rejected (%s): %s", cmd.type, "; ".join(reasons))
             else:
@@ -67,8 +69,10 @@ class Validator:
         logger.info("Validated %d/%d commands", len(valid), len(commands))
         return valid
 
-    def _check_command(self, cmd: Command) -> list[str]:
+    def _check_command(self, cmd: Command, graph: MapGraph | None = None) -> list[str]:
         """Return list of rejection reasons. Empty = valid."""
+        if graph is None:
+            graph = self.registry.get_combined()
         reasons = []
 
         # Check command type is known
@@ -105,13 +109,13 @@ class Validator:
             ]
             for node_field in node_fields:
                 node_id = cmd.params.get(node_field)
-                if node_id and not self.graph.node_exists(node_id):
+                if node_id and not graph.node_exists(node_id):
                     reasons.append(f"Node '{node_id}' does not exist in graph")
 
             # Check route_nodes for patrol
             if cmd.type == "set_patrol":
                 for node_id in cmd.params.get("route_nodes", []):
-                    if not self.graph.node_exists(node_id):
+                    if not graph.node_exists(node_id):
                         reasons.append(f"Patrol node '{node_id}' does not exist")
 
         # Check resources
