@@ -161,6 +161,35 @@ curl -X POST http://localhost:8080/api/v1/control \
   -H "Content-Type: application/json" -d '{"action": "resume"}'
 ```
 
+### `POST /api/v1/graph`
+
+Receive an auto-generated graph from SQF. Stores in the in-memory GraphRegistry and caches to disk.
+
+```bash
+curl -X POST http://localhost:8080/api/v1/graph \
+  -H "Content-Type: application/json" \
+  -d '{"map":"Stratis","level":0,"parent_node":null,"nodes":[...],"edges":[...]}'
+```
+
+**Request**:
+- `map` (string) — world name (e.g. `"Stratis"`)
+- `level` (int) — `0` for strategic, `1` for tactical
+- `parent_node` (string|null) — parent L0 node ID for L1 graphs, null for L0
+- `nodes` (array) — GraphNode objects `{id, name, level, position, elevation, properties}`
+- `edges` (array) — GraphEdge objects `{from_node, to_node, distance, ...}`
+
+**Response**: `{"status": "ok", "nodes": [{"id": "...", "position": [x, y]}, ...]}`
+
+### `GET /api/v1/graph/cache/{map_name}`
+
+Check if cached graphs exist for a map. If found, loads them into the registry.
+
+```bash
+curl http://localhost:8080/api/v1/graph/cache/Stratis
+```
+
+**Response**: `{"cached": true, "nodes": [{"id": "...", "position": [x, y]}, ...]}` or `{"cached": false, "nodes": []}`
+
 ### `GET /api/v1/status`
 
 Returns current state summary (units, objectives, pacing, last 10 ticks).
@@ -220,8 +249,8 @@ Interactive commands: `Enter` = tick, `d` = directive, `o` = override, `s` = sta
 
 ```
 src/gm_server/
-├── main.py                 # Entry point, loads graphs, wires components, runs uvicorn
-├── server.py               # FastAPI routes + embedded operator HTML UI
+├── main.py                 # Entry point, creates registry/cache, wires components, runs uvicorn
+├── server.py               # FastAPI routes + graph endpoints + embedded operator HTML UI
 ├── config.py               # Pydantic Settings + YAML loading
 ├── models/
 │   ├── game_state.py       # GameState, FriendlyUnit, EnemyContact, Objective, GraphData
@@ -234,9 +263,11 @@ src/gm_server/
 │   ├── decision_loop.py    # Main tick orchestration (async)
 │   ├── state_manager.py    # Authoritative in-memory state: units, orders, directives
 │   ├── pacing.py           # Intensity FSM: CALM → BUILD_UP → PEAK → RELAX
-│   └── validator.py        # Command validation + anti-thrashing (3-tick cooldown)
+│   └── validator.py        # Command validation + anti-thrashing (uses GraphRegistry)
 ├── graph/
-│   ├── model.py            # GraphNode, GraphEdge, MapGraph (load_from_json, from_dict, with_updates)
+│   ├── model.py            # GraphNode, GraphEdge, MapGraph (load/from_dict/to_dict/with_updates)
+│   ├── registry.py         # GraphRegistry — thread-safe dynamic storage for L0/L1 graphs
+│   ├── cache.py            # GraphCache — disk persistence to gm-server/cache/<map>/
 │   ├── context_builder.py  # Selects L0/L1/L2 subgraphs based on active combat zones
 │   └── serializer.py       # Graph → tactical text for LLM prompt
 └── prompts/
@@ -253,3 +284,5 @@ src/gm_server/
 **Empty response = safe**: If the LLM times out, returns invalid JSON, or issues zero valid commands, the server returns an empty `TickResponse`. Units hold their current positions (safe default).
 
 **Adaptive context**: The server never sends the full graph. It selects L1 tactical views for active combat zones (max 2 zones, ~300 tokens each) and L2 local detail only when the LLM explicitly requests it via `request_intel`.
+
+**Graph loading priority**: On startup the server tries: (1) disk cache in `gm-server/cache/<map>/`, (2) static JSON from `shared/maps/<map>/`, (3) empty registry (waits for SQF to generate and POST graphs). The `GraphRegistry` is a thread-safe in-memory store shared by ContextBuilder and Validator, updated dynamically as SQF submits graphs.

@@ -84,7 +84,14 @@ L1 Tactical   ─  per settlement, ~25 nodes  (included for active combat zones)
 L2 Local      ─  per block, on-the-fly  (generated on request_intel command)
 ```
 
-Graphs are stored in `shared/maps/<map>/`. Visualize with:
+**Automatic generation**: L0 and L1 graphs are generated at mission startup by SQF using engine data (`nearestLocations`, `roadsConnectedTo`, `getRoadInfo`, `getTerrainHeightASL`). Generated graphs are cached server-side — subsequent missions with the same map load instantly. Static JSON files in `shared/maps/` serve as fallback if auto-generation hasn't run yet.
+
+```
+Mission start → check cache → cache miss → scan roads → generate L0 (blocking)
+  → tick loop starts → generate L1 per settlement (background)
+```
+
+Visualize static or cached graphs with:
 
 ```bash
 python tools/graph_visualizer.py shared/maps/stratis/strategic_graph.json
@@ -100,6 +107,8 @@ While the mission runs, you can intervene via:
 | `POST /api/v1/directive` | Add a text directive to the LLM prompt (with TTL in ticks) |
 | `POST /api/v1/override` | Send direct commands bypassing LLM |
 | `POST /api/v1/control` | Pause / resume LLM decision-making |
+| `POST /api/v1/graph` | Submit auto-generated graph (used by SQF during init) |
+| `GET /api/v1/graph/cache/{map}` | Check/load cached graphs for a map |
 | `GET /ui` | Web operator console |
 
 ```bash
@@ -117,6 +126,7 @@ curl -s -X POST http://localhost:8080/api/v1/directive \
 | 2 — Extension + SQF | ✅ Done | Rust DLL, SQF addon, City Defense mission |
 | 3 — Map Graph System | ✅ Done | L2 on-the-fly, dynamic node updates, graph serialization |
 | 4 — Integration | ✅ Done | All 16 command executors, full SQF command set |
+| Auto Graph Gen | ✅ Done | L0/L1 auto-generation from engine data, disk caching, GraphRegistry |
 | 5 — Polish | 🔲 Later | Altis graphs, model benchmarks, session logging, radio chatter |
 
 ## Target LLM Models

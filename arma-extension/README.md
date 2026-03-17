@@ -18,6 +18,12 @@ A thin Rust bridge between Arma 3's `callExtension` API and the GM server HTTP A
 // Send game state JSON — returns "" immediately, response via ExtensionCallback
 "ArmaGM" callExtension ["send_state", [_jsonString]]
 
+// Send generated graph JSON — response via ExtensionCallback "graph_result"
+"ArmaGM" callExtension ["send_graph", [_jsonString]]
+
+// Check if server has cached graphs — response via ExtensionCallback "cache_result"
+"ArmaGM" callExtension ["check_cache", [_mapName]]
+
 // Ping server — response via ExtensionCallback "pong" function
 "ArmaGM" callExtension ["ping", []]
 ```
@@ -29,9 +35,17 @@ Arma receives responses through the `ExtensionCallback` mission event handler. T
 | `_function` | `_data` | Meaning |
 |-------------|---------|---------|
 | `"commands"` | JSON string | Complete tick response (≤8 KB) |
-| `"chunk_begin"` | total chunk count (string) | Start of chunked response |
-| `"chunk_data"` | chunk content | One chunk of data |
-| `"chunk_end"` | `""` | All chunks received, assemble and process |
+| `"chunk_begin"` | total chunk count (string) | Start of chunked tick response |
+| `"chunk_data"` | chunk content | One chunk of tick response data |
+| `"chunk_end"` | `""` | All tick response chunks received |
+| `"graph_result"` | JSON string | Complete graph submission response (≤8 KB) |
+| `"graph_result_chunk_begin"` | total chunk count | Start of chunked graph response |
+| `"graph_result_chunk_data"` | chunk content | One chunk of graph response |
+| `"graph_result_chunk_end"` | `""` | All graph response chunks received |
+| `"cache_result"` | JSON string | Complete cache check response (≤8 KB) |
+| `"cache_result_chunk_begin"` | total chunk count | Start of chunked cache response |
+| `"cache_result_chunk_data"` | chunk content | One chunk of cache response |
+| `"cache_result_chunk_end"` | `""` | All cache response chunks received |
 | `"pong"` | `"ok"` or `"error:..."` | Ping response |
 | `"error"` | error message | HTTP failure |
 
@@ -90,9 +104,9 @@ Arma 3 automatically loads `_x64.dll` when running in 64-bit mode.
 
 ```
 src/
-├── lib.rs          # Extension entry point: #[arma] init, three commands
+├── lib.rs          # Extension entry point: #[arma] init, five commands
 ├── http_client.rs  # Blocking HTTP (ureq): post_json(), get()
-└── chunking.rs     # Response chunker: single callback or chunk_begin/data/end
+└── chunking.rs     # Response chunker: send_response() + send_response_tagged()
 ```
 
 ## Design Notes
